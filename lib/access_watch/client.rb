@@ -17,7 +17,6 @@ module AccessWatch
     CERTIFICATE_AUTHORITIES_PATH = File.expand_path("../../../cacert.pem", __FILE__)
 
     def post(path, data)
-      Rails.logger.error("-" * 40)
       uri = URI(api_endpoint + path)
       http = Net::HTTP.new(uri.host, uri.port)
 
@@ -30,7 +29,6 @@ module AccessWatch
       post = Net::HTTP::Post.new(uri.path, default_headers)
       post.body = data.to_json
       resp = http.request(post)
-      Rails.logger.error(resp.inspect)
     end
 
     def default_headers
