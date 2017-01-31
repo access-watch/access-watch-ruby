@@ -6,11 +6,11 @@ A Ruby library to log and analyse HTTP requests using the [Access Watch](http://
 
 Install the latest version with
 
-```gem install access-watch-ruby```
+```gem install access_watch```
 
 or in your Gemfile
 
-```gem "access-watch-ruby"```
+```gem "access_watch"```
 
 ## Basic Usage
 
