@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "access_watch/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "access-watch-ruby"
+  spec.name          = "access_watch"
   spec.version       = AccessWatch::VERSION
   spec.authors       = ["Alexis Bernard"]
   spec.email         = ["alexis@bernard.io"]
