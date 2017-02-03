@@ -20,7 +20,7 @@ To get an API key, send us an email at api@access.watch and we will come back to
 
 ```ruby
 
-client = AccessWacth::Client.new(api_key: YOUR_API_KEY)
+client = AccessWatch::Client.new(api_key: YOUR_API_KEY)
 client.post("log", REQUEST_DATA_IN_JSON)
 ```
 
