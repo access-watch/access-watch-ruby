@@ -5,10 +5,11 @@ require "openssl"
 
 module AccessWatch
   class Client
-    attr_reader :api_key, :api_secret, :api_endpoint
+    attr_reader :api_key, :api_secret, :api_endpoint, :api_timeout
 
     def initialize(options)
       @api_secret = options[:api_secret]
+      @api_timeout = options[:api_timeout] || 1
       @api_key = options[:api_key] or raise "AccessWatch api_key is mandatory."
       @api_endpoint = options[:api_endpoint] || "https://access.watch/api/1.0/"
     end
@@ -43,6 +44,7 @@ module AccessWatch
 
     def http(uri)
       http = Net::HTTP.new(uri.host, uri.port)
+      http.open_timeout = api_timeout
       if uri.scheme == HTTPS
         http.verify_mode = OpenSSL::SSL::VERIFY_PEER
         http.ca_file = CERTIFICATE_AUTHORITIES_PATH
