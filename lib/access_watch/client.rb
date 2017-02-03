@@ -13,22 +13,19 @@ module AccessWatch
       @api_endpoint = options[:api_endpoint] || "https://access.watch/api/1.0/"
     end
 
-    HTTPS = "https".freeze
-    CERTIFICATE_AUTHORITIES_PATH = File.expand_path("../../../cacert.pem", __FILE__)
-
     def post(path, data)
       uri = URI(api_endpoint + path)
-      http = Net::HTTP.new(uri.host, uri.port)
-
-      if uri.scheme == HTTPS
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        http.ca_file = CERTIFICATE_AUTHORITIES_PATH
-        http.use_ssl = true
-      end
-
       post = Net::HTTP::Post.new(uri.path, default_headers)
       post.body = data.to_json
-      resp = http.request(post)
+      resp = http(uri).request(post)
+    end
+
+    def get(path, params = nil)
+      uri = URI.parse(api_endpoint + path)
+      uri.query = URI.encode_www_form(params) if params
+      request = Net::HTTP::Get.new(uri.request_uri, default_headers)
+      response = http(uri).request(request)
+      response.body
     end
 
     def default_headers
@@ -37,6 +34,21 @@ module AccessWatch
         "Accept" => "application/json",
         "Content-Type" => "application/json",
       }
+    end
+
+    private
+
+    HTTPS = "https".freeze
+    CERTIFICATE_AUTHORITIES_PATH = File.expand_path("../../../cacert.pem", __FILE__)
+
+    def http(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      if uri.scheme == HTTPS
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        http.ca_file = CERTIFICATE_AUTHORITIES_PATH
+        http.use_ssl = true
+      end
+      http
     end
   end
 end
