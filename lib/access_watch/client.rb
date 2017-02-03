@@ -34,7 +34,15 @@ module AccessWatch
         "Api-Key" => api_key,
         "Accept" => "application/json",
         "Content-Type" => "application/json",
+        "User-Agent" => user_agent,
       }
+    end
+
+    def user_agent
+      return @user_agent if @user_agent
+      result = "Access Watch/#{AccessWatch::VERSION} Ruby/#{RUBY_VERSION}"
+      result += " Rails/#{Rails.version}" if defined?(Rails)
+      @user_agent = result
     end
 
     private
